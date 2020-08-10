@@ -17,7 +17,7 @@ void writeFile(std::vector<std::string> filenames){
     myfile << "## Contents" << "\n";
     myfile << "\n";
     for(auto& filename : filenames){
-        if(filename[2] != '.'){
+        if(filename[2] != '.' && filename.compare("./README.md") != 0){
             myfile << filename << "\n";
             std::cout << filename << std::endl;
         }
