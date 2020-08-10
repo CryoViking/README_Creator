@@ -1,22 +1,61 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <vector>
+#include <filesystem>
+#include <algorithm>
 
-bool grabFileNamesRecursively(std::string path){
-    return true;
+void writeFile(std::vector<std::string> filenames){
+    std::ofstream myfile;
+    const auto readme_filename = "README.md";
+    myfile.open(readme_filename);
+    myfile << "## Synopsis" <<"\n";
+    myfile << "\n";
+    myfile << "README file for current folder" << "\n";
+    myfile << "\n";
+    myfile << "## Contents" << "\n";
+    myfile << "\n";
+    for(auto& filename : filenames){
+        if(filename[2] != '.'){
+            myfile << filename << "\n";
+            std::cout << filename << std::endl;
+        }
+    }
+    myfile << "\n";
+    myfile << "## Dependencies" << "\n";
+    myfile << "\n";
+    myfile << "None" << "\n";
+    myfile << "\n";
+    myfile << "## Version information" << "\n";
+    myfile.close();
+}
+
+std::vector<std::string> grabFileNamesRecursively(std::string path){
+    std::vector<std::string> filenames;
+    for (auto& entry : std::filesystem::recursive_directory_iterator(path)){
+        filenames.push_back(entry.path());
+    }
+    return filenames;
+}
+
+std::string removeFlag(std::string str){
+    auto word = str.find(" ");
+    if (word != std::string::npos){
+        str = str.substr(word + 1);
+    }
+    auto it = std::find_if(str.rbegin(), str.rend(), [](char c) { return !std::isspace<char>(c, std::locale::classic()); });
+    str.erase(it.base(), str.end());
+    return str;
 }
 
 void performActions(std::vector<std::string> actions){
-    for(auto i = actions.begin(); i != actions.end(); ++ i){
-        switch((*i)[0]){
+    for(auto& str : actions) {
+        switch(str[0]){
             case 'p':
-                std::cout << *i << std::endl;
-                const std::string& chars = "\t\n\v\f\r ";
-                (*i).erase((*i).find_first_not_of(chars));
-                (*i).erase((*i).find_last_not_of(chars) + 1);
-                std::cout << *i << std::endl;
-                //grabFileNamesRecursively();
+                str = removeFlag(str);
+                auto filenames = grabFileNamesRecursively(str);
+                writeFile(filenames);
                 break;
         }
     }
@@ -35,7 +74,7 @@ std::vector<std::string> parseArgumentString(std::string argument_string){
 }
 
 int main(int argc, char* argv[]){
-    std::string current_executable_name = argv[0];
+    //auto current_executable_name = argv[0];
     std::vector<std::string> all_args;
 
     if (argc > 1){
@@ -44,17 +83,13 @@ int main(int argc, char* argv[]){
 
     //Convert argument list into single string
     std::string argument_string;
-    for(auto i = all_args.begin(); i != all_args.end(); ++ i){
-        argument_string += *i;
+    for(auto& str : all_args){
+        argument_string += str;
         argument_string += ' ';
     }
 
-    std::vector<std::string> parsed_argument_list = parseArgumentString(argument_string);
+    auto parsed_argument_list = parseArgumentString(argument_string);
     parsed_argument_list.erase(parsed_argument_list.begin());
-
-    //for(auto i = parsed_argument_list.begin(); i != parsed_argument_list.end(); ++ i){
-    //    std::cout << *i << std::endl;
-    //}
 
     performActions(parsed_argument_list);
 
