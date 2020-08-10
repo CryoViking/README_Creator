@@ -22,8 +22,6 @@ FLAGS:
 
 ## Contents
 
-./output  
-./README_Template.md  
 ./README.md  
 ./main.cpp  
 

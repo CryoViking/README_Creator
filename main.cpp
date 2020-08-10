@@ -14,6 +14,10 @@ void writeFile(std::vector<std::string> filenames){
     myfile << "\n";
     myfile << "README file for current folder" << "\n";
     myfile << "\n";
+    myfile << "## Installation" << "\n";
+    myfile << "\n";
+    myfile << "## Usage" << "\n";
+    myfile << "\n";
     myfile << "## Contents" << "\n";
     myfile << "\n";
     for(auto& filename : filenames){
@@ -34,7 +38,7 @@ void writeFile(std::vector<std::string> filenames){
 std::vector<std::string> grabFileNamesRecursively(std::string path){
     std::vector<std::string> filenames;
     for (auto& entry : std::filesystem::recursive_directory_iterator(path)){
-        filenames.push_back(entry.path());
+        filenames.push_back(entry.path().u8string());
     }
     return filenames;
 }
