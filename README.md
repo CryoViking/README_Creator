@@ -17,26 +17,26 @@ readme_creator -p path/to/directory/to/read/from
 ```
 
 FLAGS:
-- ``-p``: path to get filenames from (recursively).
+- `-p`: path to get filenames from (recursively).
 
 
 ## Contents
 
-./README.md
-./main.cpp
+- ./README.md
+- ./main.cpp
 
 ## Dependencies
 
-iostream
-sstream
-fstream
-string
-vector
-filesystem
-algorithm
+- iostream
+- sstream
+- fstream
+- string
+- vector
+- filesystem
+- algorithm
 
 ## Version information
 
-Version 1.0
-Tested on ``Ubuntu 18.04`` both native and in WSL.
-Built with: ``gcc version 8.4.0``
+Version 2.0, tested on `Ubuntu 18.04`, `Windows 10` and `Kali Linux`.
+
+Built with: `g++ version 9.3.0` and `cl.exe version 19.27.29111`
